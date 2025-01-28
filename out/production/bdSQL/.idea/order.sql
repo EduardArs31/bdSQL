@@ -3,4 +3,5 @@ CREATE TABLE orders(
                        "customerId" BIGINT,
                        "productId" BIGINT,
                        "orderStatus" VARCHAR(200)
+
 );
