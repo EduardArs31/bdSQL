@@ -63,3 +63,83 @@ FROM
  books
 JOIN
  publishers ON books.publisher_id = publishers.publisher_id;
+
+--Агрегатные функции
+
+ALTER TABLE books ADD COLUMN price DECIMAL(10, 2);
+
+
+UPDATE books
+SET price = 1500.00
+WHERE book_id = 1;
+
+UPDATE books
+SET price = 800.00
+WHERE book_id = 2;
+
+UPDATE books
+SET price = 1200.00
+WHERE book_id = 3;
+
+SELECT
+    AVG(price) AS average_price,
+    MIN(price) AS minimum_price,
+    MAX(price) AS maximum_price
+FROM books;
+
+
+SELECT
+    authors.first_name,
+    authors.last_name,
+    COUNT(*) AS book_count
+FROM
+    authors
+JOIN
+    book_authors ON authors.author_id = book_authors.author_id
+GROUP BY
+    authors.author_id, authors.first_name, authors.last_name;
+
+
+SELECT
+    authors.first_name,
+    authors.last_name,
+    COUNT(books.book_id) AS book_count,
+    AVG(books.price) AS average_price
+FROM
+    authors
+JOIN
+    book_authors ON authors.author_id = book_authors.author_id
+JOIN
+    books ON book_authors.book_id = books.book_id
+GROUP BY
+    authors.author_id, authors.first_name, authors.last_name;
+
+
+INSERT INTO authors (first_name, last_name)
+VALUES
+    ('Фёдор', 'Достоевский'),
+    ('Антон', 'Чехов');
+
+
+SELECT
+    authors.first_name,
+    authors.last_name
+FROM
+    authors
+LEFT JOIN
+    book_authors ON authors.author_id = book_authors.author_id
+WHERE
+    book_authors.book_id IS NULL;
+
+
+SELECT
+    authors.first_name,
+    authors.last_name
+FROM
+    authors
+LEFT JOIN
+    book_authors ON authors.author_id = book_authors.author_id
+GROUP BY
+    authors.author_id, authors.first_name, authors.last_name
+HAVING
+    COUNT(book_authors.book_id) = 0;
