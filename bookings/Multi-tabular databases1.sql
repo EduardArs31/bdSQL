@@ -64,6 +64,7 @@ FROM
 JOIN
  publishers ON books.publisher_id = publishers.publisher_id;
 
+
 --Агрегатные функции
 
 ALTER TABLE books ADD COLUMN price DECIMAL(10, 2);
